@@ -1,0 +1,48 @@
+<% content_for :title do %>
+投稿一覧
+<% end %>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1">
+
+    <div class="row">
+      <div class="col-xs-6">
+        <h2>投稿一覧</h2>
+      </div>
+      <div class="col-xs-6">
+        <a href="<%= new_post_path %>" class="btn btn-primary btn-space-20 pull-right">新しい投稿</a>
+      </div>
+    </div>
+
+    <% @posts.each do |post| %>
+    <div class="row well">
+      <div class="col-xs-9">
+        <div class="media">
+          <div class="media-left">
+            <a href="#">
+              <img class="media-object img-circle" src="<%= "/images/#{post.user.image}" %>" width=64 height=64>
+            </a>
+          </div>
+          <div class="media-body">
+            <h5 class="media-heading"><%= post.user.name %>　<small><%= post.created_at %></small></h5>
+            <p><%= post.message %></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-3">
+        <a href="<%= post_path(:id => post.id)%>" class="btn btn-info btn-xs pull-right">表示</a>
+
+        <% if post.user.name == current_user.name %>
+        <form action="<%= post_path(:id => post.id) %>" method="post">
+          <input name="_method" type="hidden" value="DELETE">
+          <button type="submit" class="btn btn-danger btn-xs pull-right">削除</button>
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        </form>
+        <% end %>
+
+      </div>
+    </div>
+    <% end %>
+
+  </div>
+</div>
